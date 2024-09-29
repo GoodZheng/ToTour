@@ -1,12 +1,38 @@
 # ToTour：基于RESTful风格的电商后端API
 
-## 项目简述
+## Overview | 项目简述
 基于.Net 6.0开发的企业级电商后端API，打造符合RESTful L3成熟度的API，并通过JWT实现身份的认证与授权。并使用Pstman生成高标准高质量的API文档。
 
-## 开发环境
-.Net 6.0 + EF Core + MySQL-阿里云
+## Requirements | 开发环境
+- Visual Studio 2022
+- .Net 6.0
+- EF Core 6.0
+- MySQL-Alicloud / SQL Server
 
-## 核心技术
+## Database configuration | 数据库路径配置
+在```./appsettings.json```配置文件中的```appSettings```，设置已提供的数据库```totour```的连接路径。
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+
+  "DbContext": {
+    "MySQLConnectionString": "Server=yourAdress ; Database=totour; Uid=*; Pwd=*"
+  },
+  "Authentication": {
+    "SecretKey": "privatekeyoftheserver",
+    "Issuer": "totour.com",
+    "Audience": "totour.com"
+  }
+}
+```
+
+## Core technology | 核心技术
 1. 项目采用RESTFul的架构风格设计项目逻辑；
 
 2. 使用AutoMapper进行不同对象之间的自动映射；
