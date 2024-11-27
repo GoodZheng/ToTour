@@ -28,7 +28,7 @@ namespace ToTour.Controllers
             _touristRouteRepository = touristRouteRepository;
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous] // 允许任何人访问。不加也是同样效果，是默认状态
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
@@ -38,13 +38,13 @@ namespace ToTour.Controllers
             {
                 return BadRequest();
             }
-            var user = await _userManager.FindByNameAsync(loginDto.Email);
+            var user = await _userManager.FindByNameAsync(loginDto.Email); //取出数据库中的对象完整数据
 
             // 2 创建JWT Token
             // header
             var signingAlgrorithm = SecurityAlgorithms.HmacSha256;
             // payload
-            var claims = new List<Claim>
+            var claims = new List<Claim> //claim是服务器给客户端发的能代表客户端信息的系列数据
             {
                 // sub
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
@@ -58,12 +58,12 @@ namespace ToTour.Controllers
             }
             // signiture
             var secretByte = Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]); //从配置文件获取私钥
-            var signingKey = new SymmetricSecurityKey(secretByte); //对私钥进行非对称加密
-            var signingCredential = new SigningCredentials(signingKey, signingAlgrorithm); //使用hs256验证加密后的私钥
+            var signingKey = new SymmetricSecurityKey(secretByte); //根据私钥字符串构造对称加密密钥
+            var signingCredential = new SigningCredentials(signingKey, signingAlgrorithm); //使用hs256生成摘要/数字签名
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Authentication:Issuer"], //发布者
-                audience: _configuration["Authentication:Audience"], //授权方
+                audience: _configuration["Authentication:Audience"], //授权方，即此Token将发布给谁。（本项目的授权方应该是项目前端，应是同一个域名）
                 claims,
                 notBefore: DateTime.UtcNow, //发布时间
                 expires: DateTime.UtcNow.AddDays(1), //有效期1天
@@ -87,7 +87,7 @@ namespace ToTour.Controllers
                 Email = registerDto.Email
             };
 
-            // 2 hash密码，保存用户
+            // 2 hash 密码，并保存用户到数据库
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
             {

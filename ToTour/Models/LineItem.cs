@@ -6,7 +6,7 @@ namespace ToTour.Models
     public class LineItem
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //声明为自增主键
         public int Id { get; set; }
         
         [ForeignKey("TouristRouteId")]
@@ -14,9 +14,9 @@ namespace ToTour.Models
         
         public TouristRoute TouristRoute { get; set; }
         
-        public Guid? ShoppingCartId { get; set; }
+        public Guid? ShoppingCartId { get; set; } // 第二个外键
         
-        //public Guid? Order { get; set; }
+        //public Guid? Order { get; set; } // 第三个外键
         
         [Column(TypeName = "decimal(18,2)")]
         public decimal OriginalPrice { get; set; }

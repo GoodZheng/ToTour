@@ -6,7 +6,7 @@ namespace ToTour.Services
 {
     public class PropertyMappingService : IPropertyMappingService
     {
-        // 属性映射字典列表
+        // 属性映射关系字典列表 key是属性名称字符串，也就是OderBy排序字符串
         private Dictionary<string, PropertyMappingValue> _touristRoutePropertyMapping =
             new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase)
             {
@@ -16,7 +16,7 @@ namespace ToTour.Services
                 {"OriginalPrice", new PropertyMappingValue(new List<string>() {"OriginalPrice"})},
             };
 
-        // 包含 DTO 中字段与字符串名称的对应关系，然后映射给 Model
+        // 包含 DTO 中字段与字符串名称的对应关系，然后将 Dto 映射给 Model
         private IList<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
 
         public PropertyMappingService()
@@ -52,7 +52,7 @@ namespace ToTour.Services
             // 逗号来分隔字段字符串
             var fieldAfterSplit = fields.Split(',');
 
-            foreach (var field in fieldAfterSplit)
+            foreach (var field in fieldAfterSplit) // 检查每个排序参数是否合法
             {
                 // 去掉空格
                 var trimmedField = field.Trim();

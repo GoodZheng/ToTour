@@ -56,6 +56,7 @@ namespace ToTour.Controllers
             return Ok(_mapper.Map<TouristRoutePictureDto>(pictureFromRep));
         }
 
+        // 根据现有路线ID，创建该路线的图片。
         [HttpPost(Name = "CreateTouristRoutePicture")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]

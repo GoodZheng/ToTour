@@ -24,9 +24,9 @@ namespace ToTour.Helpers
                 return source; //不需要排序直接返回原数据
             }
 
-            var orderByString = string.Empty; // 后面排序时使用，生成 sql 代码
+            string orderByString = string.Empty; // 后面排序时使用，生成 sql 代码
             
-            var orderAfterSplit = orderBy.Split(',');
+            string[] orderAfterSplit = orderBy.Split(',');
             
             foreach (var order in orderAfterSplit)
             {

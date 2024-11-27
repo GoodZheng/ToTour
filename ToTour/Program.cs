@@ -39,29 +39,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     }); //验证服务的依赖注入
 
-// Add services to the container.
-// 添加服务到依赖注入容器
+// Add services to the container.  添加服务到依赖注入容器
+
+//注册MVC的Controllers组件 
 builder.Services.AddControllers(setupAction =>
 {
-    //setuoAction.ReturnHttpNotAcceptable = false; //设置为false表示忽略所有请求的头部，回复默认的数据结构json
+    //setuoAction.ReturnHttpNotAcceptable = false; //设置为false表示回复默认的数据结构json，会忽略所有请求的头部
     setupAction.ReturnHttpNotAcceptable = true;
     //setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter()); //增加对xml的支持。新框架中直接调用AddXmlDataContractSerializerFormatters即可
 }).AddNewtonsoftJson(setupAction => {
-    setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-}).AddXmlDataContractSerializerFormatters(); //注册MVC的Controllers组件 
+    setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();//添加对JsonPatch的支持
+}).AddXmlDataContractSerializerFormatters();  //添加对请求xml格式数据的支持
 
 //builder.Services.AddTransient<ITouristRouteRepository,MockTouristRouteRepository>(); //依赖注入：注册旅游路线的数据仓库
 builder.Services.AddTransient<ITouristRouteRepository, TouristRouteRepository>(); //依赖注入：注册旅游路线的数据仓库
 //builder.Services.AddSingleton 都能进行依赖注入
 //builder.Services.AddScoped 
 
-var connectionString = builder.Configuration["DbContext:MySQLConnectionString"];
+//var connectionString = builder.Configuration["DbContext:MySQLConnectionString"];
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    //option.UserMysql();
-    //IConfiguration Configuration;
-    
-    option.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString));
+    string connStr = builder.Configuration.GetSection("MySQLConnectionString").Value;
+    option.UseMySql(connStr, ServerVersion.AutoDetect(connStr));
 });
 
 //自动扫描包含映射关系的profile文件，AddAutoMapper会将所有的profile文件加载到目前的AppDomain中
@@ -69,7 +68,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-builder.Services.AddTransient<IPropertyMappingService, PropertyMappingService>();
+builder.Services.AddTransient<IPropertyMappingService, PropertyMappingService>(); //用于排序字符串与属性的转换
 
 builder.Services.Configure<MvcOptions>(config =>
 {
@@ -91,10 +90,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// 你在哪？
 //app.UseRouting();
-
+// 你是谁？
 app.UseAuthentication();
-
+// 你有什么权限？
 app.UseAuthorization();
 
 //app.MapGet("/test", () =>

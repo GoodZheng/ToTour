@@ -26,9 +26,7 @@ namespace ToTour.Services
 
         public async Task<PaginationList<TouristRoute>> GetTouristRoutesAsync(string? keyword, string? ratingOperator, int? ratingValue, int pageSize, int pageNumber, string? orderBy)
         {
-            IQueryable<TouristRoute> result = _context
-                .TouristRoutes.
-                Include(t => t.TouristRoutePictures); //相当于是生成SQL语句
+            IQueryable<TouristRoute> result = _context.TouristRoutes.Include(t => t.TouristRoutePictures); //相当于是生成SQL语句
 
 
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -91,8 +89,6 @@ namespace ToTour.Services
             //_context.SaveChanges();
         }
 
-
-
         public void AddTouristRoutePicture(Guid touristrRouteId, TouristRoutePicture touristRoutePicture)
         {
             if (touristrRouteId == Guid.Empty)
@@ -132,8 +128,8 @@ namespace ToTour.Services
         public async Task<ShoppingCart?> GetShoppingCartByUserIdAsync(string userId)
         {
             return await _context.ShoppingCarts
-                .Include(s => s.User).
-                Include(s => s.ShoppingCartItems).ThenInclude(li => li.TouristRoute)
+                .Include(s => s.User)
+                .Include(s => s.ShoppingCartItems).ThenInclude(li => li.TouristRoute)
                 .Where(s => s.UserId == userId)
                 .FirstOrDefaultAsync();
         }

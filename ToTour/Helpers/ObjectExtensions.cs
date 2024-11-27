@@ -9,6 +9,7 @@ namespace ToTour.Helpers
         public static ExpandoObject ShapeData<TSource>(this TSource source, string? fields)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
+
             var dataShapedObject = new ExpandoObject();
             if (string.IsNullOrWhiteSpace(fields))
             {

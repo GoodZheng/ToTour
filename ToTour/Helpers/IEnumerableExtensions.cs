@@ -9,8 +9,10 @@ namespace ToTour.Helpers
         public static IEnumerable<ExpandoObject> ShapeData<TSource>(this IEnumerable<TSource> source, string? fields)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            var expandObjectList = new List<ExpandoObject>();
-            // 避免在列表中便利数据，创建一个属性信息列表
+            
+            var expandObjectList = new List<ExpandoObject>(); //将包含所有需要的字段
+            
+            // 避免在列表中遍历数据，创建一个属性信息列表
             var propertyInfoList = new List<PropertyInfo>(); // PropertyInfo在 System.Reflection 命名空间下，包含对象属性所有的信息
             if (string.IsNullOrWhiteSpace(fields))
             {

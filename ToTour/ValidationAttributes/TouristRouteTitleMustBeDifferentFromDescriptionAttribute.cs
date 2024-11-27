@@ -3,6 +3,7 @@ using ToTour.Dtos;
 
 namespace ToTour.ValidationAttributes
 {
+    //对Dto进行数据验证
     public class TouristRouteTitleMustBeDifferentFromDescriptionAttribute:ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext) //参数：输入的数据对象、验证的上下文关系对象

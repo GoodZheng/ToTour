@@ -4,7 +4,7 @@ using ToTour.Models;
 
 namespace ToTour.Profiles
 {
-    public class TouristRouteProfile:Profile
+    public class TouristRouteProfile : Profile
     {
         public TouristRouteProfile()
         {

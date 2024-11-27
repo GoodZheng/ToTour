@@ -8,7 +8,7 @@ namespace ToTour.Models
         [Key]
         public Guid Id { get; set; }
 
-        public string UserId { get; set; }
+        public string UserId { get; set; } //外键
 
         public ApplicationUser User { get; set; }
 

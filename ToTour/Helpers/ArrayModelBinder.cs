@@ -27,19 +27,19 @@ namespace ToTour.Helpers
 
             // 尝试转换成指定类型
             var elementType = bindingContext.ModelType.GetTypeInfo().GenericTypeArguments[0];
-            var converter = TypeDescriptor.GetConverter(elementType);
+            var converter = TypeDescriptor.GetConverter(elementType); // 类型转换工具
 
-            // 
+            // 通过类型转换工具，将每个GUID字符串转化为GUID类型的对象
             var values = value.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => converter.ConvertFromString(x.Trim()))
-                .ToArray();
+                .ToArray(); //URL片段中，以 "," 隔开GUID字符串的值
 
-            // Create an array of that type, and set it as the Model value 
+            // 将所有GUID对象通过反射赋值到新的数组中
             var typedValues = Array.CreateInstance(elementType, values.Length);
             values.CopyTo(typedValues, 0);
             bindingContext.Model = typedValues;
 
-            // return a successful result, passing in the Model 
+            // 返回一个成功的结果，传入Model 
             bindingContext.Result = ModelBindingResult.Success(bindingContext.Model);
             return Task.CompletedTask;
         }

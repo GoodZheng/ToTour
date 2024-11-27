@@ -33,6 +33,6 @@ namespace ToTour.ResourceParameters
             }
         }
 
-        public string? Fields {  get; set; }
+        public string? Fields {  get; set; } //塑形参数
     }
 }

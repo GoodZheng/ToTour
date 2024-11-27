@@ -15,7 +15,7 @@
         public string Fees { get; set; }
         public string Notes { get; set; }
         public double? Rating { get; set; }  //评分
-        public string TravelDays { get; set; }  //enum 枚举 
+        public string TravelDays { get; set; }  //Model中的 枚举 改为 字符串
         public string TripType { get; set; }
         public string DepartureCity { get; set; }
         public ICollection<TouristRoutePictureDto> TouristRoutePictures { get; set; }

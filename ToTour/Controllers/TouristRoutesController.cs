@@ -97,7 +97,7 @@ namespace ToTour.Controllers
                 return BadRequest();
 
             if (!_propertyMappingService.IsMappingExists<TouristRouteDto, TouristRoute>(parameters.OrderBy))
-                return BadRequest("请输入正确的排序参数");
+                return BadRequest("请输入正确的排序参数"); //检查排序参数的合法性
 
             if (!_propertyMappingService.IsPropertiesExists<TouristRoute>(parameters.Fields))
                 return BadRequest("请输入正确的塑形参数");
@@ -120,12 +120,12 @@ namespace ToTour.Controllers
 
             var previousPageLink = touristRoutesFromRepo.HasPrevious
                 ? GenerateTouristRouteResourceUrl(parameters, parameters2, ResourceUriType.PreviousPage)
-                : null;
+                : null; //先判断是否存在上一页，存在则返回对应的 URL
             var nextPageLink = touristRoutesFromRepo.HasNext
                 ? GenerateTouristRouteResourceUrl(parameters, parameters2, ResourceUriType.NextPage)
                 : null;
             
-            // 给相应的头部加上自定义的分页信息  x-pagination
+            // 给相应的头部加上自定义的分页信息 自定义头部字段：x-pagination
             var paginationMetadata = new
             {
                 previousPageLink,
@@ -292,7 +292,8 @@ namespace ToTour.Controllers
 
             return NoContent(); //204。可以根据前端的需求判断是否需要返回数据
         }
-
+         
+        // 更新指定 Id 的路线的某些值
         [HttpPatch("{touristRouteId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
